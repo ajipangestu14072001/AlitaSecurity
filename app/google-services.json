@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "476730184982",
+    "project_id": "purple-security",
+    "storage_bucket": "purple-security.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476730184982:android:aa82746acb9aac490cac37",
+        "android_client_info": {
+          "package_name": "com.abeldandi.alitasecurity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476730184982-919kjl3lm524msgkr1g3pgtk3d71miob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abeldandi.alitasecurity",
+            "certificate_hash": "71a6410ba746a17cf57c329132273bd9767d5c6d"
+          }
+        },
+        {
+          "client_id": "476730184982-vng58lrol1n1hsajfdgvq5t9qh3ddlmd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSMWPx2zGKiKJGNS6G6AXrcP-a8OR7CaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476730184982-vng58lrol1n1hsajfdgvq5t9qh3ddlmd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
