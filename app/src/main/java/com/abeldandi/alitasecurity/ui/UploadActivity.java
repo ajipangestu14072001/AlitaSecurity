@@ -51,7 +51,7 @@ public class UploadActivity extends AppCompatActivity {
     private void uploadDataToDatabase(String userID, String status, String roomID, String securityName) {
         String uploadId = databaseReference.push().getKey();
 
-        DataObject dataObject = new DataObject(userID, status, roomID, securityName,"");
+        DataObject dataObject = new DataObject(userID, status, roomID);
 
         assert uploadId != null;
         databaseReference.child(uploadId).setValue(dataObject);

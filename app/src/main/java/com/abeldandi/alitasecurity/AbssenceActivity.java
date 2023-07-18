@@ -67,7 +67,7 @@ public class AbssenceActivity extends AppCompatActivity implements FetchRecycler
             ListElement element = intent.getParcelableExtra("element");
             binding.securityname.setText(element.securityname);
             binding.idnumber.setText(element.idnumber);
-            targetSecurityID = element.getIdnumber();
+            targetSecurityID = element.getIdnumber().equals("TT-6A-01") ? "1" : "2";
         } catch (Exception e) {
             System.out.println("Something When Wrong");
         }
@@ -118,13 +118,9 @@ public class AbssenceActivity extends AppCompatActivity implements FetchRecycler
 
         binding.ivCalendarPrevious.setOnClickListener(v -> {
             cal.add(Calendar.MONTH, -1);
-            if (cal.equals(currentDate))
-                setUpCalendar();
-            else
-                setUpCalendar();
+            setUpCalendar();
         });
     }
-
     private void setUpAdapter() {
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.single_calendar_margin);
         binding.recyclerView.addItemDecoration(new HorizontalItemDecoration(spacingInPixels));
@@ -133,22 +129,16 @@ public class AbssenceActivity extends AppCompatActivity implements FetchRecycler
 
         adapter = new CalendarAdapter((calendarDateModel, position) -> {
             for (int i = 0; i < calendarList2.size(); i++) {
-                CalendarDateModel model = calendarList2.get(i);
-                model.setSelected(i == position);
+                calendarList2.get(i).setSelected(i == position);
             }
             adapter.setData(calendarList2);
 
             selectedDate = dates.get(position);
             init();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            String selectedDateString = dateFormat.format(selectedDate);
         });
 
         binding.recyclerView.setAdapter(adapter);
     }
-
-
     private void setUpCalendar() {
         ArrayList<CalendarDateModel> calendarList = new ArrayList<>();
         binding.tvDateMonth.setText(sdf.format(cal.getTime()));
@@ -186,13 +176,15 @@ public class AbssenceActivity extends AppCompatActivity implements FetchRecycler
 
         if (currentDateIndex != -1) {
             calendarList.get(currentDateIndex).setSelected(true);
+            selectedDate = dates.get(currentDateIndex);
+        } else {
+            selectedDate = null;
         }
 
         calendarList2.clear();
         calendarList2.addAll(calendarList);
         adapter.setData(calendarList);
     }
-
     public void init() {
         elements = new ArrayList<>();
 
@@ -208,24 +200,19 @@ public class AbssenceActivity extends AppCompatActivity implements FetchRecycler
                     String userID = dataSnapshot.child("userID").getValue(String.class);
                     String status = dataSnapshot.child("status").getValue(String.class);
                     String roomID = dataSnapshot.child("roomID").getValue(String.class);
-                    String securityName = dataSnapshot.child("securityName").getValue(String.class);
-                    String securityID = dataSnapshot.child("securityID").getValue(String.class);
-                    String tanggal = dataSnapshot.child("tanggal").getValue(String.class);
 
-                    if (securityID != null && securityID.equals(targetSecurityID)) {
-                        Date elementDate = parseDate(tanggal);
-                        if (elementDate != null && isSameDay(elementDate, selectedDate)) {
-                            DataObject dataObject = new DataObject(userID, status, roomID, securityName, tanggal);
-                            elements.add(dataObject);
-                        }
+                    if (userID != null && userID.equals(targetSecurityID)
+                            && selectedDate != null && isSameDay(selectedDate, cal.getTime())
+                            && status != null && status.equals("CLEAR")) {
+                        DataObject dataObject = new DataObject(userID, status, roomID);
+                        elements.add(dataObject);
                     }
                 }
 
                 ListAdapter listAdapter = new ListAdapter(elements, AbssenceActivity.this, AbssenceActivity.this);
-                RecyclerView recyclerView = findViewById(R.id.recylerViewRuangan);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(AbssenceActivity.this));
-                recyclerView.setAdapter(listAdapter);
+                binding.recylerViewRuangan.setHasFixedSize(true);
+                binding.recylerViewRuangan.setLayoutManager(new LinearLayoutManager(AbssenceActivity.this));
+                binding.recylerViewRuangan.setAdapter(listAdapter);
                 listAdapter.notifyDataSetChanged();
 
                 if (elements.isEmpty()) {
@@ -248,16 +235,6 @@ public class AbssenceActivity extends AppCompatActivity implements FetchRecycler
         return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
                 && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)
                 && cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
-    }
-
-    private Date parseDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        try {
-            return dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override
