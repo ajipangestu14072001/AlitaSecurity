@@ -53,7 +53,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
         ImageView iconImage;
         TextView securityname, idnumber;
 
-        LinearLayout linearLayoutCV;
+        LinearLayout linearLayoutCV, lastMessageLayout;
 
 
         ViewHolder(View itemView) {
@@ -62,9 +62,11 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
             securityname = itemView.findViewById(R.id.securityname);
             idnumber = itemView.findViewById(R.id.idnumber);
             linearLayoutCV = itemView.findViewById(R.id.linearLayoutCV);
+            lastMessageLayout = itemView.findViewById(R.id.lastMessageLayout);
         }
 
         void bindData(final ListElement item) {
+            lastMessageLayout.setVisibility(View.GONE);
             Glide.with(context)
                     .load("https://cdn-icons-png.flaticon.com/512/149/149071.png")
                     .into(iconImage);

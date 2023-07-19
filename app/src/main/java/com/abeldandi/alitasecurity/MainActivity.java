@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.abeldandi.alitasecurity.ui.ChatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -33,37 +34,28 @@ public class MainActivity extends AppCompatActivity {
         loginPassword = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = loginEmail.getText().toString();
-                String password = loginPassword.getText().toString();
+        loginButton.setOnClickListener(view -> {
+            String email = loginEmail.getText().toString();
+            String password = loginPassword.getText().toString();
 
-                if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    if (!password.isEmpty()) {
-                        auth.signInWithEmailAndPassword(email, password)
-                                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                    @Override
-                                    public void onSuccess(AuthResult authResult) {
-                                        Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(MainActivity.this, EmployeeActivity.class));
-                                        finish();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        String errorMessage = e.getMessage();
-                                        Toast.makeText(MainActivity.this, "Login Failed" + errorMessage, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else {
-                        loginPassword.setError("Password cannot be empty");
-                    }
-                } else if(email.isEmpty()) {
-                    loginEmail.setError("Email cannot be empty");
+            if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!password.isEmpty()) {
+                    auth.signInWithEmailAndPassword(email, password)
+                            .addOnSuccessListener(authResult -> {
+                                Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(MainActivity.this, EmployeeActivity.class));
+                                finish();
+                            }).addOnFailureListener(e -> {
+                                String errorMessage = e.getMessage();
+                                Toast.makeText(MainActivity.this, "Login Failed" + errorMessage, Toast.LENGTH_SHORT).show();
+                            });
                 } else {
-                    loginEmail.setError("Please enter valid email");
+                    loginPassword.setError("Password cannot be empty");
                 }
+            } else if(email.isEmpty()) {
+                loginEmail.setError("Email cannot be empty");
+            } else {
+                loginEmail.setError("Please enter valid email");
             }
         });
     }

@@ -7,17 +7,23 @@ public class ListElement implements Parcelable {
     public String color;
     public String securityname;
     public String idnumber;
+    public String lastMessage;
+    public String lastMessageTime;
 
     public ListElement(String color, String securityname, String idnumber) {
         this.color = color;
         this.securityname = securityname;
         this.idnumber = idnumber;
+        this.lastMessage = "";
+        this.lastMessageTime = "";
     }
 
     protected ListElement(Parcel in) {
         color = in.readString();
         securityname = in.readString();
         idnumber = in.readString();
+        lastMessage = in.readString();
+        lastMessageTime = in.readString();
     }
 
     public static final Creator<ListElement> CREATOR = new Creator<ListElement>() {
@@ -56,6 +62,22 @@ public class ListElement implements Parcelable {
         this.idnumber = idnumber;
     }
 
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public String getLastMessageTime() {
+        return lastMessageTime;
+    }
+
+    public void setLastMessageTime(String lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -66,6 +88,9 @@ public class ListElement implements Parcelable {
         dest.writeString(color);
         dest.writeString(securityname);
         dest.writeString(idnumber);
+        dest.writeString(lastMessage);
+        dest.writeString(lastMessageTime);
     }
 }
+
 
