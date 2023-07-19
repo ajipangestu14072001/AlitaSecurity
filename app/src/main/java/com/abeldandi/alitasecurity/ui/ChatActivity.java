@@ -26,6 +26,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText messageEditText;
     private Button sendButton;
     private ListView listView;
+    private Toolbar toolbar;
     private TextView nameSec, idSec;
     private MessageAdapter adapter;
 
@@ -68,6 +70,8 @@ public class ChatActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         nameSec = findViewById(R.id.nameSec);
         idSec = findViewById(R.id.idSec);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -135,6 +139,12 @@ public class ChatActivity extends AppCompatActivity {
         TimeZone timeZone = TimeZone.getTimeZone("Asia/Jakarta");
         sdf.setTimeZone(timeZone);
         return sdf.format(new Date());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }
